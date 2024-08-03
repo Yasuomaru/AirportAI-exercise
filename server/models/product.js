@@ -1,3 +1,6 @@
+// Product model
+// This file contains the schema for the product model.
+
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({

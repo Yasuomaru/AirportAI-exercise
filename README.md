@@ -19,3 +19,16 @@ npm start
 ```
 
 If everything is ok, you should see a 'Hello world!' message when you go to 'http://localhost:3000' on your browser.
+
+
+
+---
+
+# Models
+Product
+- product_type
+- brand
+- color
+- lost_time
+
+User
