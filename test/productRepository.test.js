@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 const sinon = require('sinon')
 const Product = require('../server/models/product')
-const productRepository = require('../server/repository/product.js')
+const productRepository = require('../server/repositories/product.js')
 
 describe('Product Repository', () => {
 

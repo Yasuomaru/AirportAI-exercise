@@ -5,7 +5,11 @@ const Product = require('../models/product');
 
 
 const getAll = async () => {
-    return await Product.find();
+    try {
+        return await Product.find();
+    } catch (error) {
+        throw new Error('Database error');
+    }
 }
 
 const getById = async (id) => {
