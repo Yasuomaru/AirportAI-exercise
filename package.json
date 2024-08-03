@@ -2,7 +2,7 @@
   "name": "node-js-skeleton",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon app.js --inspect",
+    "dev": "nodemon --inspect app.js ",
     "start": "node app.js",
     "test": "NODE_ENV=test mocha --recursive --inspect --exit test",
     "test-win": "set NODE_ENV=test&& mocha --recursive --inspect --exit test"

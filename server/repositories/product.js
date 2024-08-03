@@ -1,6 +1,7 @@
 //Product repository
 //This file contains the logic for interacting with the database.
 
+const { sendNotFound } = require('../helpers/httpResponses/errors');
 const Product = require('../models/product');
 
 
@@ -24,6 +25,19 @@ const save = async (product) => {
 
     if (!product.brand) {
         throw new Error('Brand is required');
+    }
+
+    //check if to update or create
+    if (product._id) {
+        const bdProduct = await Product.findById(product._id);
+
+        if (!bdProduct) {
+            sendNotFound('Product not found');
+        }
+
+        Object.assign(bdProduct, product);
+
+        return await bdProduct.save();
     }
 
     return await new Product(product).save();
