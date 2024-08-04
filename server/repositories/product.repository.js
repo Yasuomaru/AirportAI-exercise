@@ -2,7 +2,7 @@
 //This file contains the logic for interacting with the database.
 
 const { sendNotFound } = require('../helpers/httpResponses/errors');
-const Product = require('../models/product');
+const Product = require('../models/product.model');
 
 
 const getAll = async () => {

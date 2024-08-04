@@ -1,5 +1,6 @@
+const { CreateProductDTO } = require('../dtos/product');
 const { successes, serverErrors } = require('../helpers/httpResponses')
-const {getAll, getById, save, destroy : _destroy} = require('../repositories/product')
+const {getAll, getById, save, destroy : _destroy} = require('../repositories/product.repository')
 class ProductController {
 
     static async index(req, res) {
@@ -24,8 +25,10 @@ class ProductController {
 
     static async store(req, res) {
         try {
+            const createProductDTO = new CreateProductDTO(req.body);
+
             const product = save(req.body)
-            
+
             successes.sendSuccess(res, product);
         } catch (error) {
             serverErrors.sendInternalServerError(res, error);
