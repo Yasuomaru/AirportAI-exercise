@@ -5,6 +5,10 @@ class UpdateProductDTO {
         if (color !== undefined) this.color = color;
         if (lost_time !== undefined) this.lost_time = lost_time;
     }
+
+    static fromRequest(reqBody) {
+        return new UpdateProductDTO(reqBody.product_type, reqBody.brand, reqBody.color, reqBody.lost_time);
+    }
 }
 
 module.exports = UpdateProductDTO;
