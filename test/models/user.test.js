@@ -58,4 +58,17 @@ describe('User Repository', () => {
             expect(error.message).to.equal('Username is required');
         }
     });
+
+    it('Should return an error if the username is already taken', async () => {
+        try {
+            await new User({
+                username: 'test',
+                password: 'test',
+                role: 'agent'
+            }).save();
+        } catch (error) {
+            expect(error.message).to.equal('Username is already taken');
+        }
+    });
+
 });
