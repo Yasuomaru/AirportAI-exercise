@@ -26,11 +26,6 @@ class MockUser {
             throw new Error('Username is already taken');
         }
 
-        if (this.id !== '123') {
-            throw new Error('User not found');
-        }
-
-
         return this;
     }
 }
@@ -57,58 +52,73 @@ class UserRepositoryMongoose extends UserRepositoryInterface {
 }
 
 
-describe('User Repository', () => {
+describe('[User Repository test suite]', () => {
+    describe('[M] Create method', () => {
+        describe('Errors for username field', () => {
+            it('Should return an error if no username is provided', async () => {
+                try {
+                    await UserRepositoryMongoose.create({
+                        password: 'test',
+                        role: 'agent'
+                    });
+                } catch (error) {
+                    expect(error.message).to.equal('Username is required');
+                }
+            });
 
-    describe('Create Method: username field errors', () => {
-        it('Should return an error if no username is provided', async () => {
-            try {
-                await UserRepositoryMongoose.create({
-                    password: 'test',
-                    role: 'agent'
-                });
-            } catch (error) {
-                expect(error.message).to.equal('Username is required');
-            }
+            it('Should return an error if the username is already taken', async () => {
+                try {
+                    await new User({
+                        username: 'taken',
+                        password: 'test',
+                        role: 'agent'
+                    }).save();
+                } catch (error) {
+                    expect(error.message).to.equal('Username is already taken');
+                }
+            });
         });
 
-        it('Should return an error if the username is already taken', async () => {
-            try {
-                await new User({
-                    username: 'taken',
-                    password: 'test',
-                    role: 'agent'
-                }).save();
-            } catch (error) {
-                expect(error.message).to.equal('Username is already taken');
-            }
+        describe('Errors for password field', () => {
+            //Pasword field
+            it('Should return an error if no password is provided', async () => {
+                try {
+                    await UserRepositoryMongoose.create({
+                        username: 'test',
+                        role: 'agent'
+                    });
+                } catch (error) {
+                    expect(error.message).to.equal('Password is required');
+                }
+            });
         });
-    });
 
-    describe('Create Method: password field errors', () => {
-        //Pasword field
-        it('Should return an error if no password is provided', async () => {
-            try {
-                await UserRepositoryMongoose.create({
+        describe('Errors for role field', () => {
+            it('Should return an error if the role is not valid', async () => {
+                try {
+                    await UserRepositoryMongoose.create({
+                        username: 'test',
+                        password: 'test',
+                        role: 'invalid'
+                    });
+                } catch (error) {
+                    expect(error.message).to.equal('Invalid role');
+                }
+            });
+        });
+
+        describe('Success', () => {
+            it('Should return the created user', async () => {
+                const user = await UserRepositoryMongoose.create({
                     username: 'test',
+                    password: 'test',
                     role: 'agent'
                 });
-            } catch (error) {
-                expect(error.message).to.equal('Password is required');
-            }
-        });
-    });
 
-    describe('Create Method: role field errors', () => {
-        it('Should return an error if the role is not valid', async () => {
-            try {
-                await UserRepositoryMongoose.create({
-                    username: 'test',
-                    password: 'test',
-                    role: 'invalid'
-                });
-            } catch (error) {
-                expect(error.message).to.equal('Invalid role');
-            }
+                expect(user.username).to.equal('test');
+                expect(user.password).to.equal('test');
+                expect(user.role).to.equal('agent');
+            });
         });
     });
 });
